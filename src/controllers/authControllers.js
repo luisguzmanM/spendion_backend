@@ -1,5 +1,5 @@
 const db = require('./../config/database');
-const models = require('./../models/authModels');
+const model = require('../models/authModel');
 require('dotenv').config();
 const encryptor = require('simple-encryptor')(process.env.ENCRYPTOR_KEY);
 const jwt = require('jsonwebtoken');
@@ -10,7 +10,7 @@ const signup = async (req, res) => {
   let exists;
 
   try {
-    exists = await db.query(models.getPersonByEmail, [email]);
+    exists = await db.query(model.getPersonByEmail, [email]);
   } catch (error) {
     console.log(error);
     res.status(500).send({msj: 'There is a problem with checking if person exists'});
@@ -22,7 +22,7 @@ const signup = async (req, res) => {
   }
 
   try {
-    const result = await db.query(models.signUp, [firstName, lastName, email, encryptedPassword]);
+    const result = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword]);
     const token = jwt.sign(result.rows[0].create_person, process.env.JWT_KEY);
     res.status(200).send({msj: 'Signup successfull', person: result.rows[0].create_person, token: token});
   } catch (error) {
@@ -36,7 +36,7 @@ const login = async (req, res) => {
   let exists;
 
   try {
-    exists = await db.query(models.getPersonByEmail, [email]);
+    exists = await db.query(model.getPersonByEmail, [email]);
   } catch (error) {
     console.log(error);
   }
