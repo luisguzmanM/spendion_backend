@@ -34,7 +34,19 @@ const createBudget = async (req, res) => {
   res.status(200).send({msj: 'Budget created successfully', budget: budget});
 }
 
+const deleteBudget = async (req, res) => {
+  const id_budget = req.query.id_budget;
+  try {
+    await db.query(models.deleteBudget, [id_budget]);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({msj: 'Error removing budget'});
+  }
+  res.status(200).send({msj: 'Budget deleted successfully'});
+}
+
 module.exports = {
   getBudgets,
-  createBudget
+  createBudget,
+  deleteBudget
 }
