@@ -55,9 +55,11 @@ const login = async (req, res) => {
     id_person: exists.rows[0].get_person_by_email.id_person
   }
 
+  const token = jwt.sign(person, process.env.JWT_KEY);
+
   decryptedPassword !== password 
   ? res.status(400).send({msj: 'Wrong password'})
-  : res.status(200).send({msj: 'Login successfull', person: person})
+  : res.status(200).send({msj: 'Login successfull', person: person, token: token})
 }
 
 module.exports = {
