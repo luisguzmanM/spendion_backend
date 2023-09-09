@@ -14,9 +14,8 @@ const getBudgets = async (req, res) => {
     res.status(500).send({msj: 'Error getting budgets'});
   }
 
-  const budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
-  const updatedBudgets = getValuesByBudget(budgets);
-  console.log(updatedBudgets);
+  let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
+  budgets = getValuesByBudget(budgets);
 
   res.status(200).send({budgets: budgets});
 }
