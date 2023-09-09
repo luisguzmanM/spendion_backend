@@ -1,3 +1,4 @@
+const { getValuesByBudget } = require('../utils/calcs');
 const db = require('./../config/database');
 const models = require('./../models/homeModel');
 const jwt = require('jsonwebtoken');
@@ -14,6 +15,9 @@ const getBudgets = async (req, res) => {
   }
 
   const budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
+  const updatedBudgets = getValuesByBudget(budgets);
+  console.log(updatedBudgets);
+
   res.status(200).send({budgets: budgets});
 }
 
