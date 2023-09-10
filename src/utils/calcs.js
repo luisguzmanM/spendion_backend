@@ -6,7 +6,7 @@ const getValuesByBudget = arr => {
     if(budget.record){
       spent = budget.record.reduce((acc, e) => acc + e.amount, 0);
     }
-    progress = budget.amount > spent ? (spent / 100) * budget.amount : 100;
+    progress = budget.amount > spent ? Math.ceil((spent * 100) / budget.amount) : 100;
     free = budget.amount > spent ? budget.amount - spent : 0;
     budget.spent = spent;
     budget.progress = progress;
