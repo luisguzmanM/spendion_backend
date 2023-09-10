@@ -1,4 +1,5 @@
 const { getValuesByBudget } = require('../utils/calcs');
+const { generarID } = require('../utils/token');
 const db = require('./../config/database');
 const models = require('./../models/homeModel');
 const jwt = require('jsonwebtoken');
@@ -45,8 +46,25 @@ const deleteBudget = async (req, res) => {
   res.status(200).send({msj: 'Budget deleted successfully'});
 }
 
+const updateRecord = async (req, res) => {
+  const { title, amount, id_budget } = req.body;
+  const result = await db.query(models.getRecord, [id_budget]);
+  const currentRecord = result.rows[0].get_record_by_budget;
+  const obj = {
+    id: generarID(),
+    title: title,
+    amount: amount
+  }
+  currentRecord.push(obj);
+  const results = await db.query(models.updateRecord, [id_budget, JSON.stringify(currentRecord)]);
+  const newResult = resutls.rows[0].update_record;
+  console.log(newResult)
+  res.status(200).send({record:currentRecord})
+}
+
 module.exports = {
   getBudgets,
   createBudget,
-  deleteBudget
+  deleteBudget,
+  updateRecord
 }
