@@ -1,5 +1,4 @@
 const { getValuesByBudget } = require('../utils/calcs');
-const { generarID } = require('../utils/token');
 const db = require('./../config/database');
 const models = require('./../models/homeModel');
 const jwt = require('jsonwebtoken');
@@ -47,8 +46,24 @@ const deleteBudget = async (req, res) => {
 }
 
 const updateRecord = async (req, res) => {
-  const { title, amount, id_budget } = req.body;
-  
+  const { id_budget, record } = req.body;
+  let result;
+
+  console.log('ID BUDGET ----> ', id_budget);
+  console.log('RECORD ----> ', record);
+
+  try {
+    result = await db.query(models.updateRecord, [id_budget, JSON.stringify(record)]);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({msj: 'There is a problem to update record'});
+  }
+
+  result.rows[0].update_record.record === null ? result.rows[0].update_record.record = [] : '';
+
+  const recordUpdated = result.rows[0].update_record.record;
+
+  res.status(200).send({msj: 'Record updated successfully', record: recordUpdated});
 }
 
 module.exports = {

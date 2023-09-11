@@ -1,16 +1,16 @@
 const getValuesByBudget = arr => {
-  let spent = 0;
-  let progress = 0;
-  let free = 0;
   arr.map(budget => {
-    if(budget.record){
-      spent = budget.record.reduce((acc, e) => acc + e.amount, 0);
+    if(budget.record !== null){
+      budget.spent = budget.record.reduce((acc, elem) => acc + elem.amount, 0);
+      budget.free = budget.spent <= budget.amount ? budget.amount - budget.spent : 0;
+      budget.progress = budget.spent <= budget.amount ? Math.ceil((budget.spent * 100) / budget.amount) : 100;
+      console.log(budget);
+    } else {
+      budget.spent = 0;
+      budget.free = budget.amount;
+      budget.progress = 0;
+      console.log(budget);
     }
-    progress = budget.amount > spent ? Math.ceil((spent * 100) / budget.amount) : 100;
-    free = budget.amount > spent ? budget.amount - spent : 0;
-    budget.spent = spent;
-    budget.progress = progress;
-    budget.free = free;
   })
   return arr;
 }
