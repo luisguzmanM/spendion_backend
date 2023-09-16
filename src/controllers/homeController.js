@@ -48,10 +48,6 @@ const deleteBudget = async (req, res) => {
 const updateRecord = async (req, res) => {
   const { id_budget, record } = req.body;
   let result;
-
-  console.log('ID BUDGET ----> ', id_budget);
-  console.log('RECORD ----> ', record);
-
   try {
     result = await db.query(models.updateRecord, [id_budget, JSON.stringify(record)]);
   } catch (err) {
@@ -66,9 +62,23 @@ const updateRecord = async (req, res) => {
   res.status(200).send({msj: 'Record updated successfully', record: recordUpdated});
 }
 
+const addIncome = async (req, res) => {
+  console.log(req.body);
+  const { token, amount } = req.body;
+  const person = jwt.verify(token, process.env.JWT_KEY);
+  try {
+    const result = await db.query(models.addIncome, [amount, person.id_person]); 
+    res.status(200).send({msj: 'Income inserted successfully', income: result.rows[0]});
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({msj: 'Problem when trying to insert income'});
+  }
+}
+
 module.exports = {
   getBudgets,
   createBudget,
   deleteBudget,
-  updateRecord
+  updateRecord,
+  addIncome
 }
