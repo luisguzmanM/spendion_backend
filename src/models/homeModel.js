@@ -4,6 +4,7 @@ const createBudget = 'SELECT create_budget($1, $2, $3)';
 const deleteBudget = 'SELECT delete_budget($1)';
 const updateRecord = 'SELECT update_record($1, $2)';
 const addIncome = 'SELECT add_income($1, $2)';
+const getIncome = 'SELECT get_income($1)';
 
 module.exports = {
   getBudgets,
@@ -11,5 +12,6 @@ module.exports = {
   createBudget,
   deleteBudget,
   updateRecord,
-  addIncome
+  addIncome,
+  getIncome
 }

@@ -67,11 +67,15 @@ const addIncome = async (req, res) => {
   const person = jwt.verify(token, process.env.JWT_KEY);
   try {
     const result = await db.query(models.addIncome, [person.id_person, amount]); 
-    res.status(200).send({msj: 'Income inserted successfully', income: result.rows[0].add_income});
+    res.status(200).send({msj: 'Income inserted successfully', income: result.rows[0].income});
   } catch (err) {
     console.log(err);
     res.status(500).send({msj: 'Problem when trying to insert income'});
   }
+}
+
+const getIncome = async (req, res) => {
+  console.log(req.query);
 }
 
 module.exports = {
@@ -79,5 +83,6 @@ module.exports = {
   createBudget,
   deleteBudget,
   updateRecord,
-  addIncome
+  addIncome,
+  getIncome
 }
