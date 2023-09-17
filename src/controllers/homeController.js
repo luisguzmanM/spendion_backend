@@ -75,7 +75,16 @@ const addIncome = async (req, res) => {
 }
 
 const getIncome = async (req, res) => {
-  console.log(req.query);
+  const token = req.query.token;
+  const person = jwt.verify(token, process.env.JWT_KEY);
+  let result;
+  try {
+    result = await db.query(models.getIncome, [person.id_person]);
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({msj: 'Problem trying to get income'});
+  }
+  res.status(200).send({income: result.rows[0].income});
 }
 
 module.exports = {
