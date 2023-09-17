@@ -63,12 +63,11 @@ const updateRecord = async (req, res) => {
 }
 
 const addIncome = async (req, res) => {
-  console.log(req.body);
   const { token, amount } = req.body;
   const person = jwt.verify(token, process.env.JWT_KEY);
   try {
-    const result = await db.query(models.addIncome, [amount, person.id_person]); 
-    res.status(200).send({msj: 'Income inserted successfully', income: result.rows[0]});
+    const result = await db.query(models.addIncome, [person.id_person, amount]); 
+    res.status(200).send({msj: 'Income inserted successfully', income: result.rows[0].add_income});
   } catch (err) {
     console.log(err);
     res.status(500).send({msj: 'Problem when trying to insert income'});
