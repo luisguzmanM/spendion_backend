@@ -6,17 +6,14 @@ const jwt = require('jsonwebtoken');
 const getBudgets = async (req, res) => {
   const id_person = parseInt(req.query.id);
   let result;
-
   try {
     result = await db.query(models.getBudgets, [id_person]);
   } catch (err) {
     console.log(err);
     res.status(500).send({msj: 'Error getting budgets'});
   }
-
   let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
   budgets = getValuesByBudget(budgets);
-
   res.status(200).send({budgets: budgets});
 }
 
@@ -54,11 +51,8 @@ const updateRecord = async (req, res) => {
     console.log(err);
     res.status(500).send({msj: 'There is a problem to update record'});
   }
-
   result.rows[0].update_record.record === null ? result.rows[0].update_record.record = [] : '';
-
   const recordUpdated = result.rows[0].update_record.record;
-
   res.status(200).send({msj: 'Record updated successfully', record: recordUpdated});
 }
 
