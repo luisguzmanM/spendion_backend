@@ -4,7 +4,7 @@ const models = require('./../models/homeModel');
 const jwt = require('jsonwebtoken');
 
 const getBudgets = async (req, res) => {
-  const id_person = parseInt(req.query.id);
+  const id_person = parseInt(req.query.id_person);
   let result;
   try {
     result = await db.query(models.getBudgets, [id_person]);
@@ -14,7 +14,7 @@ const getBudgets = async (req, res) => {
   }
   let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
   budgets = getValuesByBudget(budgets);
-  res.status(200).send({budgets: budgets});
+  res.status(200).send(budgets);
 }
 
 const createBudget = async (req, res) => {
@@ -27,8 +27,8 @@ const createBudget = async (req, res) => {
     console.log(err);
     res.status(500).send({msj: 'Problem to create budget'});
   }
-  const budget = result.rows[0].create_budget;
-  res.status(200).send({msj: 'Budget created successfully', budget: budget});
+  const budget = result.rows[0].budget;
+  res.status(200).send(budget);
 }
 
 const deleteBudget = async (req, res) => {
