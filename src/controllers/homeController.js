@@ -42,11 +42,13 @@ const deleteBudget = async (req, res) => {
   }
   try {
     result = await db.query(models.getBudgets, [id_person]);
-    res.status(200).send(result.rows[0].get_all_budgets_by_id_person);
   } catch (error) {
     console.log(err);
     res.status(500).send({msj: 'Error getting budget updated after delete a budget'});
   }
+  let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
+  budgets = getValuesByBudget(budgets);
+  res.status(200).send(budgets);
 }
 
 const updateRecord = async (req, res) => {
