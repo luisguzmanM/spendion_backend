@@ -62,7 +62,7 @@ const updateRecord = async (req, res) => {
   }
   result.rows[0].update_record.record === null ? result.rows[0].update_record.record = [] : '';
   const recordUpdated = result.rows[0].update_record.record;
-  res.status(200).send({msj: 'Record updated successfully', record: recordUpdated});
+  res.status(200).send(recordUpdated);
 }
 
 const addIncome = async (req, res) => {
