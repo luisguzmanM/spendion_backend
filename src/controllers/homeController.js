@@ -27,12 +27,20 @@ const createBudget = async (req, res) => {
     console.log(err);
     res.status(500).send({msj: 'Problem to create budget'});
   }
-  const budget = result.rows[0].budget;
+  const budget = {
+    amount: result.rows[0].budget.amount,
+    free: result.rows[0].budget.amount,
+    id_budget: result.rows[0].budget.id_budget,
+    progress: 0,
+    record: null,
+    spent: 0,
+    title: result.rows[0].budget.title
+  }
   res.status(200).send(budget);
 }
 
 const deleteBudget = async (req, res) => {
-  const {id_budget, id_person} = req.query;
+  const {id_budget} = req.query;
   let result;
   try {
     await db.query(models.deleteBudget, [id_budget]);
@@ -40,15 +48,7 @@ const deleteBudget = async (req, res) => {
     console.log(err);
     res.status(500).send({msj: 'Error removing budget'});
   }
-  try {
-    result = await db.query(models.getBudgets, [id_person]);
-  } catch (error) {
-    console.log(err);
-    res.status(500).send({msj: 'Error getting budget updated after delete a budget'});
-  }
-  let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
-  budgets = getValuesByBudget(budgets);
-  res.status(200).send(budgets);
+  res.status(200).send({msj: 'Budget deleted successfully'})
 }
 
 const updateRecord = async (req, res) => {
