@@ -1,9 +1,0 @@
-services:
-  - name: spendion_backend
-    type: web
-    buildCommand: npm install
-    startCommand: npm run start
-
-routes:
-  - source: ^/(.*)
-    destination: spendion_backend
