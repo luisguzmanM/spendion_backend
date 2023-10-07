@@ -18,7 +18,7 @@ app.use('/auth', authRoutes);
 app.use('/home', homeRouter);
 
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'https://spendion-backend.onrender.com/index.html'));
+  res.sendFile(path.join(__dirname, 'https://www.spendion.app'));
 });
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
