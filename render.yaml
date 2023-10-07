@@ -1,9 +1,9 @@
 services:
-  - name: spendion_frontend
+  - name: spendion_backend
     type: web
-    buildCommand: npm install && ng build --prod
-    startCommand: npx serve -s dist/spendion_frontend
+    buildCommand: npm install
+    startCommand: npm run start
 
 routes:
   - source: ^/(.*)
-    destination: /index.html
+    destination: spendion_backend
