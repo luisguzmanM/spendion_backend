@@ -1,13 +1,8 @@
 services:
-  - name: spendion_backend
+  - name: spendion_frontend
     type: web
-    buildCommand: npm install
-    startCommand: npm run start
-
-databases:
-  - name: spendion_database
-    plan: hobbyist
-    engine: postgresql
+    buildCommand: npm install && ng build --prod
+    startCommand: npx serve -s dist/spendion_frontend
 
 routes:
   - source: ^/(.*)
