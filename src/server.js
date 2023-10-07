@@ -3,6 +3,7 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 const homeRouter = require('./routes/homeRoutes');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 
