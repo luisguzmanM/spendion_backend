@@ -17,12 +17,10 @@ app.use('/auth', authRoutes);
 
 app.use('/home', homeRouter);
 
-// Configuración para servir archivos estáticos desde la carpeta 'dist/spendion' del frontend
-app.use(express.static(path.join(__dirname, 'dist', 'spendion')));
+app.use(express.static(path.join(__dirname, 'dist/spendion')));
 
-// Middleware para redirigir todas las solicitudes al archivo index.html
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'spendion', 'index.html'));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/spendion', 'index.html'));
 });
 
 
