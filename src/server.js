@@ -22,7 +22,8 @@ app.use(express.static(path.join(__dirname, 'https://spendion-frontend.onrender.
 
 // Enrutamiento para todas las rutas (cualquier ruta) que envía el archivo index.html
 app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'https://spendion-frontend.onrender.com/dist/side_project01_frontend/index.html'));
+  res.sendFile(path.join(__dirname, 'https://spendion-frontend.onrender.com/dist/side_project01_frontend', 'index.html'));
 });
+
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
