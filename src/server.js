@@ -17,12 +17,12 @@ app.use('/auth', authRoutes);
 
 app.use('/home', homeRouter);
 
-/**ARCHIVOS ESTATICOS**/
-app
-  .use('/', express.static('dist', { redirect: false }))
-  .get('*', function (req, res, next) {
-    res.sendFile(path.resolve('dist/index.html'));
-  });
+// Servir archivos estáticos desde la carpeta 'dist'
+app.use(express.static(path.join(__dirname, 'dist')));
 
+// Enrutamiento para todas las rutas (cualquier ruta) que envía el archivo index.html
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
