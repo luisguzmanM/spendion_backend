@@ -17,11 +17,13 @@ app.use('/auth', authRoutes);
 
 app.use('/home', homeRouter);
 
-app.use(express.static(path.join(__dirname, 'dist/spendion')));
-
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/spendion', 'index.html'));
-});
+/**ARCHIVOS ESTATICOS**/
+app
+  .use('/public/', express.static('public', { redirect: false }))
+  .use('/', express.static('dist', { redirect: false }))
+  .get('*', function (req, res, next) {
+    res.sendFile(path.resolve('dist/index.html'));
+  });
 
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
