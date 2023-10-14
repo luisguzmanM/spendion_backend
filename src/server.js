@@ -19,8 +19,9 @@ app.use('/auth', authRoutes);
 
 app.use('/home', homeRouter);
 
+// Configurar la ruta para el archivo index.html
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'https://www.spendion.app/dist/index.html'));
+  res.sendFile(path.join(__dirname, 'https://www.spendion.app/dist', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
