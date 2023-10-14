@@ -13,14 +13,15 @@ app.use(cors());
 
 app.use(express.json());
 
+
+app.use('/auth', authRoutes);
+
+app.use('/home', homeRouter);
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
-
-app.use('/auth', authRoutes);
-
-app.use('/home', homeRouter);
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
