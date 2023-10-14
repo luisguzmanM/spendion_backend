@@ -13,7 +13,9 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, 'https://www.spendion.app/dist')));
+
+// Configurar la ruta estática para los archivos generados por Angular
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/auth', authRoutes);
 
@@ -21,7 +23,7 @@ app.use('/home', homeRouter);
 
 // Configurar la ruta para el archivo index.html
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'https://www.spendion.app/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
