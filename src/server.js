@@ -13,14 +13,14 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, 'spendion-frontend.onrender.com/dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/auth', authRoutes);
 
 app.use('/home', homeRouter);
 
 app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'spendion-frontend.onrender.com/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
