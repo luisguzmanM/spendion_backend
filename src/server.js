@@ -13,16 +13,14 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use('/auth', authRoutes);
-
-app.use('/home', homeRouter);
-
-// Servir archivos estáticos desde la carpeta 'dist'
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Enrutamiento para todas las rutas (cualquier ruta) que envía el archivo index.html
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
+app.use('/auth', authRoutes);
+
+app.use('/home', homeRouter);
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
