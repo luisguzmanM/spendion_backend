@@ -19,7 +19,6 @@ app.use('/home', homeRouter);
 
 /**ARCHIVOS ESTATICOS**/
 app
-  .use('/public/', express.static('public', { redirect: false }))
   .use('/', express.static('dist', { redirect: false }))
   .get('*', function (req, res, next) {
     res.sendFile(path.resolve('dist/index.html'));
