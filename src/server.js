@@ -23,4 +23,5 @@ app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, '../spendion_frontend/dist/spendion', 'index.html'));
 });
 
+
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
