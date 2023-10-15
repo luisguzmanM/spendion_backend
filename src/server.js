@@ -10,20 +10,16 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(cors());
-
 app.use(express.json());
 
-
-// Configurar la ruta estática para los archivos generados por Angular
-app.use(express.static(path.join(__dirname, '')));
-
 app.use('/auth', authRoutes);
-
 app.use('/home', homeRouter);
 
-// Configurar la ruta para el archivo index.html
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, '', 'index.html'));
+// Configuración para manejar rutas de Angular
+app.use(express.static(path.join(__dirname, 'dist', 'spendion')));
+
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'dist', 'spendion', 'index.html'));
 });
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
