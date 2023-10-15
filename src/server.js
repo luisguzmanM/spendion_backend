@@ -18,10 +18,13 @@ app.use('/home', homeRouter);
 // Configuración para servir archivos estáticos de Angular
 app.use(express.static(path.join(__dirname, '../spendion_frontend/dist/spendion')));
 
+
 // Configuración para manejar rutas de Angular
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, '../spendion_frontend/dist/spendion', 'index.html'));
 });
 
+console.log('__dirname: ', __dirname)
+console.log('__filename: ', __filename)
 
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
