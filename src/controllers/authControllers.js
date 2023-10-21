@@ -42,15 +42,16 @@ const signup = async (req, res) => {
 }
 
 const confirmation = async (req, res) => {
-  console.log(req)
-  // try {
-  //   const resp = await db.query(model.realConfirmation, [token]);
-  //   console.log(resp)
-  //   res.status(200).send({msj: 'Account confirmed'});
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(500).send('Error trying to confirm account');
-  // }
+  console.log(req.body)
+  const token = req.body.token;
+  try {
+    const resp = await db.query(model.realConfirmation, [token]);
+    console.log(resp)
+    res.status(200).send({msj: 'Account confirmed'});
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Error trying to confirm account');
+  }
 }
 
 const login = async (req, res) => {
