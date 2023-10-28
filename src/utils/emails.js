@@ -15,10 +15,8 @@ const emailRegistro = async (data) => {
 
   const { email, name, token } = data;
 
-  // Enlace para confirmar la cuenta
   const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
   // const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
-
 
   await transport.sendMail({
     from: 'spendion.app',
@@ -32,7 +30,7 @@ const emailRegistro = async (data) => {
         Your spendion account has been created. Now you just need to confirm your account in the following link: 
         <a href="${confirmationLink}">Confirm account</a>
       </p>
-      <small>If you did not create this account, you can ignore this email.</small>
+      <p>If you did not create this account, you can ignore this email.</p>
     `
   });
 };

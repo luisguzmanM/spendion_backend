@@ -25,8 +25,7 @@ const signup = async (req, res) => {
   }
 
   try {
-    const result = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
-    const token = jwt.sign(result.rows[0].create_person, process.env.JWT_KEY);
+    await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
 
     emails.emailRegistro({
       name: firstName,
@@ -34,32 +33,12 @@ const signup = async (req, res) => {
       token: tokenConfirmation
     })
 
-    res.status(200).send({msj: 'Signup successfull', person: result.rows[0].create_person, token: token});
+    res.status(200).send({msj: 'Signup successfull'});
   } catch (error) {
     console.log(error);
     res.status(500).send('There is a signup problem');
   }
 }
-
-const confirmation = async (req, res) => {
-  const token = req.body.token;
-  try {
-    await db.query(model.realConfirmation, [token]);
-    res.status(200).send({msj: 'Account confirmed successfully'});
-  } catch (error) {
-    res.status(500).send('Error trying to confirm account');
-  }
-}
-
-// const token = req.body.token;
-// try {
-//   const resp = await db.query(model.realConfirmation, [token]);
-//   console.log(resp)
-//   res.status(200).send({msj: 'Account confirmed'});
-// } catch (error) {
-//   console.log(error);
-//   res.status(500).send('Error trying to confirm account');
-// }
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -96,6 +75,18 @@ const login = async (req, res) => {
   decryptedPassword !== password 
   ? res.status(400).send({msj: 'Wrong password'})
   : res.status(200).send({msj: 'Login successfull', person: person, token: token})
+}
+
+const confirmation = async (req, res) => {
+  console.log('Begin account confirmation ------>');
+  const token = req.body.token;
+  try {
+    const confirmation = await db.query(model.realConfirmation, [token]);
+    console.log('Account confirmation -----> ', confirmation);
+    res.status(200).send({msj: 'Account confirmed successfully'});
+  } catch (error) {
+    res.status(500).send('Error trying to confirm account');
+  }
 }
 
 module.exports = {
