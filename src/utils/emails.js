@@ -15,8 +15,8 @@ const emailRegistro = async (data) => {
 
   const { email, name, token } = data;
 
-  const confirmationLink = `https://www.spendion.app/account-confirmed/${token}`;
-  // const confirmationLink = `http://localhost:4200/account-confirmed/?${token}`;
+  const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
+  // const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
 
   await transport.sendMail({
     from: 'spendion.app',
