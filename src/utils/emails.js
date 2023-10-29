@@ -5,8 +5,9 @@ require('dotenv').config();
 
 const emailRegistro = async (data) => {
   const transport = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
+    // host: process.env.EMAIL_HOST,
+    // port: process.env.EMAIL_PORT,
+    service: process.env.EMAIL_HOST,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
@@ -15,8 +16,8 @@ const emailRegistro = async (data) => {
 
   const { email, name, token } = data;
 
-  const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
-  // const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
+  // const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
+  const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
 
   await transport.sendMail({
     from: 'spendion.app',
