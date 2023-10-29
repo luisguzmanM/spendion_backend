@@ -4,6 +4,6 @@ const router = Router();
 
 router.post('/signup', controller.signup);
 router.post('/login', controller.login);
-router.post('/confirmation', controller.confirmation);
+router.put('/confirmation', controller.confirmation);
 
 module.exports = router;
