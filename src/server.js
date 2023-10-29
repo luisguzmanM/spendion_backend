@@ -15,12 +15,4 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/home', homeRouter);
 
-// Configuración para servir archivos estáticos desde la carpeta "dist/spendion"
-app.use(express.static(path.join(__dirname, 'dist/spendion')));
-
-// Agrega una regla para redirigir todas las solicitudes a index.html
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/spendion/index.html'));
-});
-
 app.listen(port, () => console.log(`Server running in port ${port} :D`));
