@@ -8,7 +8,7 @@ const emailRegistro = async (data) => {
     host: process.env.EMAIL_HOST,
     port: process.env.EMAIL_PORT,
     service: process.env.EMAIL_SERVICE,
-    secure: false,
+    secure: true,
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
@@ -17,8 +17,8 @@ const emailRegistro = async (data) => {
 
   const { email, name, token } = data;
 
-  const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
-  // const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
+  // const confirmationLink = `https://www.spendion.app/account-confirmed?token=${token}`;
+  const confirmationLink = `http://localhost:4200/account-confirmed?token=${token}`;
 
   await transport.sendMail({
     from: {
