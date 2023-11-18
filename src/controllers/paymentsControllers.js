@@ -6,6 +6,7 @@ const auth = {
   pass: process.env.PAYPAL_SECRET_KEY
 }
 
+// Paso 1
 const createProduct = (req, res) => {
   
   const product = {
@@ -27,6 +28,7 @@ const createProduct = (req, res) => {
 
 }
 
+// Paso 2
 const createPlan = (req, res) => {
 
   const { body } = req; // product_id
@@ -46,8 +48,8 @@ const createPlan = (req, res) => {
         total_cycles: 12,
         pricing_scheme: {
           fixed_price: { 
-            value: '10.00', // Precio mensual
-            currency_code: 'USD'
+            value: '10.00', // Pago recurrente (Como en el gym) esto es lo que se va a cobrar cada mes.
+            currency_code: 'USD' // Puedes configurar la moneda
           }
         }
       }
@@ -59,7 +61,7 @@ const createPlan = (req, res) => {
         currency_code: 'USD'
       },
       setup_fee_failure_action: 'CONTINUE',
-      payment_failure_threshold: 3
+      payment_failure_threshold: 3 // Si el pago falla lo intenta tres veces mas.
     },
     taxes: {
       percentage: '0.00', 
@@ -77,13 +79,14 @@ const createPlan = (req, res) => {
 
 }
 
+// Paso 3
 const generateSubscription = (req, res) => {
 
   const { body } = req;
 
   const subscription = {
     plan_id: body.plan_id,
-    start_time: "2023-11-10T00:00:00Z", // Fecha en la que inicia la subscripción.
+    start_time: "2023-11-10T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
     quantity: 1,
     subscriber: {
       name: {
@@ -106,12 +109,12 @@ const generateSubscription = (req, res) => {
 
 }
 
-/**
- * Esta función solicita al usuario autorización para que paypal pueda descontar dinero de su cuenta.
- * @param {*} req 
- * @param {*} res 
- */
+// Paso 4
 const createPayment = (req, res) => {
+
+  /**
+ * Esta función solicita al usuario autorización para que paypal pueda descontar dinero de su cuenta.
+ */
 
   const body = {
     intent: 'CAPTURE',
@@ -140,12 +143,11 @@ const createPayment = (req, res) => {
 
 }
 
-/**
- * Esta función captura el monto de la cuenta del usuario. Hace efectivo el pago.
- * @param {*} req 
- * @param {*} res 
- */
+// Paso 5
 const executePayment = (req, res) => {
+  /**
+ * Esta función captura el monto de la cuenta del usuario. Hace efectivo el pago.
+ */
 
   const token = req.query.token;
 
@@ -168,3 +170,31 @@ module.exports = {
   createPayment,
   executePayment
 }
+
+/**
+ * PASOS GENERAR COBROS CON PAYPAL:
+ * 
+ * CONFIGURACIONES:
+ *   1. Crear App: Esto devuelve un client ID y un secret ID.
+ *   2. Instalar en la app backend de node -> express, cors y request.
+ *   3. Importar estas librerías en el archivo donde se van a ejecutar las funciones de pago de paypal.
+ *   3. Inicializar express en el archivo y utilizar los cors.
+ *   4. Guardar el cliente ID y el secret ID en las variables de entorno y llamarlas en una variable
+ *   5. SandBox es para pruebas y live es para producción.
+ *   6. Declarar objeto que contenga client ID y Secret ID.
+ * 
+ * B. FUNCIONES BACKEND NECESARIAS PARA SUBSCRIPCIONES CON PAYPAL
+ *   1. Crear producto.
+ *      - Esto nos retorna un id de producto.
+ *   2. Crear plan.
+ *      - Le pasamos un id de producto y no retorna un id de plan.
+ *   3. Crear subscripción.
+ *      - Le pasamos un id de plan y nos retorn una url para pasarle al cliente.
+ * 
+ * C. FUNCIONES BCAKEND NECESARIAS PARA PAGOS ÚNICOS CON PAYPAL
+ *   1. Crear pago.
+ *      - Retorn un objeto. La que nos interesa es la que dice "approve". Copiar esa url y abrir en incógnito.
+ *      - Ir a sandbox accounts y obtener un usuario de prueba.
+ *      - Iniciar sesión con usuario simulado de paypal (No iniciar sesión con tu cuenta real).
+ *   2. Ejecutar pago.
+ */
