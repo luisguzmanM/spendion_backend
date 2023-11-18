@@ -20,4 +20,4 @@ app.use('/auth', authRoutes);
 app.use('/home', homeRoutes);
 app.use('/payment', paymentsRoutes)
 
-app.listen(port, () => console.log(`Server running in port ${port} :D`));
+app.listen(port, () => console.log(`Comencemos a generar dinero en el puerto ---> ${port} :D`));
