@@ -63,15 +63,14 @@ const login = async (req, res) => {
 
   const decryptedPassword = encryptor.decrypt(exists.rows[0].get_person_by_email.phash);
 
-  console.log(exists.rows[0].get_person_by_email);
-
   const person = {
     fname: exists.rows[0].get_person_by_email.fname,
     lname: exists.rows[0].get_person_by_email.lname,
     email: exists.rows[0].get_person_by_email.email,
     id_person: exists.rows[0].get_person_by_email.id_person,
     confirmed: exists.rows[0].get_person_by_email.confirmed,
-    created: exists.rows[0].get_person_by_email.created
+    created: exists.rows[0].get_person_by_email.created,
+    tp_susc: exists.rows[0].get_person_by_email.tp_susc
   }
 
   const token = jwt.sign(person, process.env.JWT_KEY);
