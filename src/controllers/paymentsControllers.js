@@ -189,9 +189,9 @@ module.exports = {
  *   2. Crear plan.
  *      - Le pasamos un id de producto y no retorna un id de plan.
  *   3. Crear subscripción.
- *      - Le pasamos un id de plan y nos retorn una url para pasarle al cliente.
+ *      - Le pasamos un id de plan y nos retorna una url para pasarle al cliente.
  * 
- * C. FUNCIONES BCAKEND NECESARIAS PARA PAGOS ÚNICOS CON PAYPAL
+ * C. FUNCIONES BACKEND NECESARIAS PARA PAGOS ÚNICOS CON PAYPAL
  *   1. Crear pago.
  *      - Retorn un objeto. La que nos interesa es la que dice "approve". Copiar esa url y abrir en incógnito.
  *      - Ir a sandbox accounts y obtener un usuario de prueba.
