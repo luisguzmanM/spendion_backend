@@ -8,7 +8,7 @@ const auth = {
 
 // Paso 1
 const createProduct = (req, res) => {
-  
+  console.log('Ejecutando paso 1')
   const product = {
     name: 'Spendion subscription',
     description: 'Monthly subscription to spendion',
@@ -30,7 +30,7 @@ const createProduct = (req, res) => {
 
 // Paso 2
 const createPlan = (req, res) => {
-
+  console.log('Ejecutando paso 2')
   const { body } = req; // product_id
 
   const plan = {
@@ -81,7 +81,7 @@ const createPlan = (req, res) => {
 
 // Paso 3
 const generateSubscription = (req, res) => {
-
+  console.log('Ejecutando paso 3')
   const { body } = req;
 
   const subscription = {
@@ -111,7 +111,7 @@ const generateSubscription = (req, res) => {
 
 // Paso 4
 const createPayment = (req, res) => {
-
+  console.log('Ejecutando paso 4')
   /**
  * Esta función solicita al usuario autorización para que paypal pueda descontar dinero de su cuenta.
  */
@@ -145,6 +145,7 @@ const createPayment = (req, res) => {
 
 // Paso 5
 const executePayment = (req, res) => {
+  console.log('Ejecutando paso 5')
   /**
  * Esta función captura el monto de la cuenta del usuario. Hace efectivo el pago.
  */
@@ -163,12 +164,17 @@ const executePayment = (req, res) => {
 
 }
 
+const probarWebhook = (req, res) => {
+  console.log('webhook!!!');
+}
+
 module.exports = {
   createProduct,
   createPlan,
   generateSubscription,
   createPayment,
-  executePayment
+  executePayment,
+  probarWebhook
 }
 
 /**
