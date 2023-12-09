@@ -10,7 +10,6 @@ const auth = {
 
 // Paso 1
 const createProduct = (req, res) => {
-  console.log('Ejecutando paso 1')
   const product = {
     name: 'Spendion subscription',
     description: 'Monthly subscription to spendion',
@@ -19,7 +18,6 @@ const createProduct = (req, res) => {
     image_url: 'https://www.google.com', // Imagen del producto
     home_url: 'https://www.google.com'
   }
-
   request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/catalogs/products`, {
     auth,
     body: product,
@@ -27,12 +25,10 @@ const createProduct = (req, res) => {
   }, (err, response) => {
     res.json({ data: response.body })
   })
-
 }
 
 // Paso 2
 const createPlan = (req, res) => {
-  console.log('Ejecutando paso 2')
   const { body } = req; // product_id
 
   const plan = {
@@ -70,7 +66,6 @@ const createPlan = (req, res) => {
       inclusive: false
     }
   }
-
   request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/billing/plans`, {
     auth,
     body: plan,
@@ -78,14 +73,11 @@ const createPlan = (req, res) => {
   }, (err, response) => {
     res.json({ data: response.body })
   })
-
 }
 
 // Paso 3
 const generateSubscription = (req, res) => {
-  console.log('Ejecutando paso 3')
   const { body } = req;
-
   const subscription = {
     plan_id: body.plan_id,
     start_time: "2023-11-10T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
@@ -100,7 +92,6 @@ const generateSubscription = (req, res) => {
     return_url: 'http://localhost:4000/payment/gracias',
     cancel_url: 'http://localhost:4000/payment/cancelPayment'
   }
-
   request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/billing/subscriptions`, {
     auth,
     body: subscription,
@@ -108,18 +99,15 @@ const generateSubscription = (req, res) => {
   }, (err, response) => {
     res.json({ data: response.body });
   })
-
 }
 
 // Pasos para ejecutar un pago único de producto
 
 // Paso 1
 const createPayment = (req, res) => {
-  console.log('Ejecutando paso 4')
   /**
  * Esta función solicita al usuario autorización para que paypal pueda descontar dinero de su cuenta.
  */
-
   const body = {
     intent: 'CAPTURE',
     purchase_units: [{
@@ -136,7 +124,6 @@ const createPayment = (req, res) => {
       cancel_url: 'http://localhost:4000/payment/cancelPayment' // URL a la que será redirigido el usuario si cancela
     }
   }
-
   request.post(`${process.env.PAYPAL_API_SANDBOX}/v2/checkout/orders`, {
     auth,
     body,
@@ -144,20 +131,15 @@ const createPayment = (req, res) => {
   }, (err, response) => {
     res.json({ data: response.body })
   })
-
 }
 
 // Paso 2
 const executePayment = (req, res) => {
-  console.log('Ejecutando paso 5')
-  /**
+/**
  * Esta función captura el monto de la cuenta del usuario. Hace efectivo el pago.
  */
-
   const token = req.query.token;
-
   // El siguiente request devuelve la data con el estado del cobro
-
   request.post(`${process.env.PAYPAL_API_SANDBOX}/v2/checkout/orders/${token}/capture`, {
     auth,
     body: {},
@@ -165,7 +147,6 @@ const executePayment = (req, res) => {
   }, (err, response) => {
     res.json({ data: response.body })
   })
-
 }
 
 module.exports = {
