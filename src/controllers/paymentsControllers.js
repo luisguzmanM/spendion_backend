@@ -164,17 +164,12 @@ const executePayment = (req, res) => {
 
 }
 
-const probarWebhook = (req, res) => {
-  console.log('webhook!!!');
-}
-
 module.exports = {
   createProduct,
   createPlan,
   generateSubscription,
   createPayment,
-  executePayment,
-  probarWebhook
+  executePayment
 }
 
 /**
