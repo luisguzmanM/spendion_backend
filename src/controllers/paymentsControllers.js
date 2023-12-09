@@ -6,6 +6,8 @@ const auth = {
   pass: process.env.PAYPAL_SECRET_KEY
 }
 
+// Pasos para ejecutar una subscripción a un producto
+
 // Paso 1
 const createProduct = (req, res) => {
   console.log('Ejecutando paso 1')
@@ -109,7 +111,9 @@ const generateSubscription = (req, res) => {
 
 }
 
-// Paso 4
+// Pasos para ejecutar un pago único de producto
+
+// Paso 1
 const createPayment = (req, res) => {
   console.log('Ejecutando paso 4')
   /**
@@ -143,7 +147,7 @@ const createPayment = (req, res) => {
 
 }
 
-// Paso 5
+// Paso 2
 const executePayment = (req, res) => {
   console.log('Ejecutando paso 5')
   /**
