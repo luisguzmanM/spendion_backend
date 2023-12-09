@@ -28,7 +28,7 @@ const createProduct = (req, res) => {
 }
 
 // Paso 2
-const createPlan = (req, res) => {
+const createPlan = (req, res) => {  
   const { body } = req; // product_id
 
   const plan = {
@@ -80,7 +80,7 @@ const createSubscription = (req, res) => {
   const { body } = req;
   const subscription = {
     plan_id: body.plan_id,
-    start_time: "2023-11-10T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
+    start_time: "2024-01-01T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
     quantity: 1,
     subscriber: {
       name: {
