@@ -46,7 +46,7 @@ const createPlan = (req, res) => {
         total_cycles: 12,
         pricing_scheme: {
           fixed_price: { 
-            value: '10.00', // Pago recurrente (Como en el gym) esto es lo que se va a cobrar cada mes.
+            value: '9.99', // Pago recurrente (Como en el gym) esto es lo que se va a cobrar cada mes.
             currency_code: 'USD' // Puedes configurar la moneda
           }
         }
