@@ -9,5 +9,6 @@ router.get('/executePayment', controller.executePayment);
 // Subscription
 router.post('/createProduct', controller.createProduct);
 router.post('/createPlan'   , controller.createPlan);
+router.post('/createSubscription'   , controller.createSubscription);
 
 module.exports = router;

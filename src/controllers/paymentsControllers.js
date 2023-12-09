@@ -76,7 +76,7 @@ const createPlan = (req, res) => {
 }
 
 // Paso 3
-const generateSubscription = (req, res) => {
+const createSubscription = (req, res) => {
   const { body } = req;
   const subscription = {
     plan_id: body.plan_id,
@@ -152,7 +152,7 @@ const executePayment = (req, res) => {
 module.exports = {
   createProduct,
   createPlan,
-  generateSubscription,
+  createSubscription,
   createPayment,
   executePayment
 }
