@@ -10,6 +10,7 @@ const auth = {
 
 // Paso 1
 const createProduct = (req, res) => {
+  console.log('createProduct :D')
   const product = {
     name: 'Spendion subscription',
     description: 'Monthly subscription to spendion',
@@ -29,6 +30,7 @@ const createProduct = (req, res) => {
 
 // Paso 2
 const createPlan = (req, res) => {  
+  console.log('createPlan :D')
   const { body } = req; // product_id
 
   const plan = {
@@ -77,6 +79,7 @@ const createPlan = (req, res) => {
 
 // Paso 3
 const createSubscription = (req, res) => {
+  console.log('createSubscription :D')
   const { body } = req;
   const subscription = {
     plan_id: body.plan_id,
