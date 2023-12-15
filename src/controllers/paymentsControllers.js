@@ -1,9 +1,12 @@
 require('dotenv').config();
 const request = require('request');
 
+const url_api = process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_API_LIVE : process.env.PAYPAL_API_SANDBOX;
+console.log(url_api);
+
 const auth = {
-  user: process.env.PAYPAL_CLIENT_ID,
-  pass: process.env.PAYPAL_SECRET_KEY
+  user: process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_CLIENT_ID_LIVE : process.env.PAYPAL_CLIENT_ID_SANDBOX,
+  pass: process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_SECRET_KEY_LIVE : process.env.PAYPAL_SECRET_KEY_SANDBOX
 }
 
 // Pasos para ejecutar una subscripción a un producto
