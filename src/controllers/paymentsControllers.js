@@ -100,7 +100,7 @@ const createSubscription = (req, res) => {
     body: subscription,
     json: true
   }, (err, response) => {
-    console.log('Subscription link created successfully. Time to make money 🤑');
+    console.log('Subscription link created successfully.');
     res.json({ data: response.body });
   })
 }
@@ -153,12 +153,17 @@ const executePayment = (req, res) => {
   })
 }
 
+const subscriptionWebhook = () => {
+  console.log('User subscribed successfully. Time to make money 🤑');
+}
+
 module.exports = {
   createProduct,
   createPlan,
   createSubscription,
   createPayment,
-  executePayment
+  executePayment,
+  subscriptionWebhook
 }
 
 /**
