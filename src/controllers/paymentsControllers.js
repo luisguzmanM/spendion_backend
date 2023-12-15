@@ -22,7 +22,7 @@ const createProduct = (req, res) => {
     image_url: 'https://www.google.com', // Imagen del producto
     home_url: 'https://www.google.com'
   }
-  request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/catalogs/products`, {
+  request.post(`${url_api}/v1/catalogs/products`, {
     auth,
     body: product,
     json: true
@@ -71,7 +71,7 @@ const createPlan = (req, res) => {
       inclusive: false
     }
   }
-  request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/billing/plans`, {
+  request.post(`${url_api}/v1/billing/plans`, {
     auth,
     body: plan,
     json: true
@@ -98,7 +98,7 @@ const createSubscription = (req, res) => {
     return_url: 'http://localhost:4000/payment/gracias',
     cancel_url: 'http://localhost:4000/payment/cancelPayment'
   }
-  request.post(`${process.env.PAYPAL_API_SANDBOX}/v1/billing/subscriptions`, {
+  request.post(`${url_api}/v1/billing/subscriptions`, {
     auth,
     body: subscription,
     json: true
@@ -131,7 +131,7 @@ const createPayment = (req, res) => {
       cancel_url: 'http://localhost:4000/payment/cancelPayment' // URL a la que será redirigido el usuario si cancela
     }
   }
-  request.post(`${process.env.PAYPAL_API_SANDBOX}/v2/checkout/orders`, {
+  request.post(`${url_api}/v2/checkout/orders`, {
     auth,
     body,
     json: true
@@ -147,7 +147,7 @@ const executePayment = (req, res) => {
  */
   const token = req.query.token;
   // El siguiente request devuelve la data con el estado del cobro
-  request.post(`${process.env.PAYPAL_API_SANDBOX}/v2/checkout/orders/${token}/capture`, {
+  request.post(`${url_api}/v2/checkout/orders/${token}/capture`, {
     auth,
     body: {},
     json: true
