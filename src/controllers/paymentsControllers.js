@@ -10,7 +10,7 @@ const auth = {
 
 // Paso 1
 const createProduct = (req, res) => {
-  console.log('createProduct :D')
+  console.log('creating product...');
   const product = {
     name: 'Spendion subscription',
     description: 'Monthly subscription to spendion',
@@ -30,7 +30,7 @@ const createProduct = (req, res) => {
 
 // Paso 2
 const createPlan = (req, res) => {  
-  console.log('createPlan :D')
+  console.log('creating plan...')
   const { body } = req; // product_id
 
   const plan = {
@@ -79,7 +79,7 @@ const createPlan = (req, res) => {
 
 // Paso 3
 const createSubscription = (req, res) => {
-  console.log('createSubscription :D')
+  console.log('creating subscription...');
   const { body } = req;
   const subscription = {
     plan_id: body.plan_id,
@@ -100,6 +100,7 @@ const createSubscription = (req, res) => {
     body: subscription,
     json: true
   }, (err, response) => {
+    console.log('Subscription link created successfully. Time to make money 🤑');
     res.json({ data: response.body });
   })
 }
