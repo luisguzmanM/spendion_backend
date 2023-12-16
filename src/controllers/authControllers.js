@@ -73,6 +73,8 @@ const login = async (req, res) => {
     tp_susc: exists.rows[0].get_person_by_email.tp_susc
   }
 
+  console.log(person);
+
   const token = jwt.sign(person, process.env.JWT_KEY);
 
   decryptedPassword !== password 
