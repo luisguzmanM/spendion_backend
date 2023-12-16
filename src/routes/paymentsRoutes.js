@@ -12,6 +12,6 @@ router.post('/createPlan'   , controller.createPlan);
 router.post('/createSubscription'   , controller.createSubscription);
 
 // Hooks
-router.post('/subscriptionWebhook', controller.subscriptionWebhook);
+router.post('/webhookCreateProduct', controller.webhookCreateProduct);
 
 module.exports = router;

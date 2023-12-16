@@ -156,8 +156,8 @@ const executePayment = (req, res) => {
   })
 }
 
-const subscriptionWebhook = () => {
-  console.log('User subscribed successfully. Time to make money 🤑');
+const webhookCreateProduct = () => {
+  console.log('Time to make money 🤑');
 }
 
 module.exports = {
@@ -166,7 +166,7 @@ module.exports = {
   createSubscription,
   createPayment,
   executePayment,
-  subscriptionWebhook
+  webhookCreateProduct
 }
 
 /**
