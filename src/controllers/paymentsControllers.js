@@ -165,7 +165,6 @@ const executePayment = (req, res) => {
 
 const webHookCreateProduct = async (req, res) => {
   console.log('Time to make money 🤑');
-  const { id_person } = req.body;
   try {
     const upgrade = await db.query(model.upgradePlan, [id_person]);
     console.log(upgrade.rows[0]);
