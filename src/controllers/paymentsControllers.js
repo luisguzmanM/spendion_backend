@@ -1,6 +1,11 @@
 require('dotenv').config();
 const request = require('request');
 
+const db = require('./../config/database');
+const model = require('./../models/paymentsModel');
+
+let id_person = null;
+
 const url_api = process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_API_LIVE : process.env.PAYPAL_API_SANDBOX;
 console.log(url_api);
 
@@ -84,6 +89,8 @@ const createPlan = (req, res) => {
 const createSubscription = (req, res) => {
   console.log('creating subscription...');
   const { body } = req;
+  id_person = req.body.id_person;
+  console.log('id_person: ', id_person);
   const subscription = {
     plan_id: body.plan_id,
     start_time: "2024-01-01T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
@@ -120,7 +127,7 @@ const createPayment = (req, res) => {
     purchase_units: [{
       amount: {
         currency_code: 'USD',
-        value: '10.00'
+        value: '9.99'
       }
     }],
     application_context: {
@@ -156,8 +163,15 @@ const executePayment = (req, res) => {
   })
 }
 
-const webhookCreateProduct = () => {
+const webHookCreateProduct = async (req, res) => {
   console.log('Time to make money 🤑');
+  const { id_person } = req.body;
+  try {
+    const upgrade = await db.query(model.upgradePlan, [id_person]);
+    console.log(upgrade.rows[0]);
+  } catch (err) {
+    throw err;
+  }
 }
 
 module.exports = {
@@ -166,7 +180,7 @@ module.exports = {
   createSubscription,
   createPayment,
   executePayment,
-  webhookCreateProduct
+  webHookCreateProduct
 }
 
 /**
