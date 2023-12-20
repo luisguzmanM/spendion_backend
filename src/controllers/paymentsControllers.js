@@ -90,7 +90,6 @@ const createSubscription = (req, res) => {
   console.log('creating subscription...');
   const { body } = req;
   id_person = req.body.id_person;
-  console.log('id_person: ', id_person);
   const subscription = {
     plan_id: body.plan_id,
     start_time: "2024-01-01T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
@@ -166,8 +165,7 @@ const executePayment = (req, res) => {
 const webHookCreateProduct = async (req, res) => {
   console.log('Time to make money 🤑');
   try {
-    const upgrade = await db.query(model.upgradePlan, [id_person]);
-    console.log(upgrade.rows[0]);
+    await db.query(model.upgradePlan, [id_person]);
   } catch (err) {
     throw err;
   }

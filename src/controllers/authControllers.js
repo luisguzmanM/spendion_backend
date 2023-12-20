@@ -41,6 +41,7 @@ const signup = async (req, res) => {
 }
 
 const login = async (req, res) => {
+  console.log('login executed!!!')
   const { email, password } = req.body;
   let exists;
 
