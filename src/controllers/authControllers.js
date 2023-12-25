@@ -15,7 +15,6 @@ const signup = async (req, res) => {
   try {
     exists = await db.query(model.getPersonByEmail, [email]);
   } catch (error) {
-    console.log(error);
     res.status(500).send({msj: 'There is a problem with checking if person exists'});
   }
 
@@ -25,7 +24,8 @@ const signup = async (req, res) => {
   }
 
   try {
-    await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
+    const response = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
+    console.log(response)
 
     emails.emailRegistro({
       name: firstName,
