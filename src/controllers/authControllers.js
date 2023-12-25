@@ -71,7 +71,7 @@ const login = async (req, res) => {
     id_person: exists.rows[0].get_person_by_email.id_person,
     confirmed: exists.rows[0].get_person_by_email.confirmed,
     created: exists.rows[0].get_person_by_email.created,
-    tp_susc: exists.rows[0].get_person_by_email.tp_susc
+    flg_premium: exists.rows[0].get_person_by_email.flg_premium
   }
 
   console.log(person);

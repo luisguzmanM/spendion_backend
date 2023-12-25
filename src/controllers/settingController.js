@@ -2,6 +2,7 @@ const db = require('./../config/database');
 const model = require('../models/settingModel');
 
 const updateDataUser = async (req, res) => {
+  console.log(req.body);
   const { id_person, fname, lname, photo } = req.body;
   try {
     const userDataUpdated = await db.query(model.updateDataUser, [id_person, fname, lname, photo]);
