@@ -24,8 +24,8 @@ const signup = async (req, res) => {
   }
 
   try {
-    const response = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
-    console.log(response)
+    console.log(req.body)
+    const response = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword]);
 
     emails.emailRegistro({
       name: firstName,
