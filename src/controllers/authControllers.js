@@ -24,8 +24,7 @@ const signup = async (req, res) => {
   }
 
   try {
-    console.log(req.body)
-    const response = await db.query(model.signUp, [firstName, lastName, email, encryptedPassword]);
+    await db.query(model.signUp, [firstName, lastName, email, encryptedPassword]);
 
     emails.emailRegistro({
       name: firstName,
@@ -36,7 +35,7 @@ const signup = async (req, res) => {
     res.status(200).send({msj: 'Signup successfull'});
   } catch (error) {
     console.log(error);
-    res.status(500).send('There is a signup problem');
+    res.status(500).send('There is a signup problem. Try again.');
   }
 }
 
@@ -73,8 +72,6 @@ const login = async (req, res) => {
     flg_premium: exists.rows[0].get_person_by_email.flg_premium
   }
 
-  console.log(person);
-
   const token = jwt.sign(person, process.env.JWT_KEY);
 
   decryptedPassword !== password 
@@ -83,11 +80,11 @@ const login = async (req, res) => {
 }
 
 const confirmation = async (req, res) => {
-  console.log('Begin account confirmation ------>');
   const token = req.body.token;
+  console.log(token)
   try {
     const confirmation = await db.query(model.realConfirmation, [token]);
-    console.log('Account confirmation -----> ', confirmation);
+    console.log('confirmation :', confirmation);
     res.status(200).send({msj: 'Account confirmed successfully'});
   } catch (error) {
     res.status(500).send('Error trying to confirm account');
