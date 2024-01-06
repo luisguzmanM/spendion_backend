@@ -7,6 +7,7 @@ const emails = require('./../utils/emails');
 const tokenConfirm = require('./../utils/token');
 
 const signup = async (req, res) => {
+
   const { firstName, lastName, email, password } = req.body;
   const encryptedPassword = encryptor.encrypt(password);
   const tokenConfirmation = tokenConfirm.generarID()
@@ -24,7 +25,7 @@ const signup = async (req, res) => {
   }
 
   try {
-    await db.query(model.signUp, [firstName, lastName, email, encryptedPassword]);
+    await db.query(model.signUp, [firstName, lastName, email, encryptedPassword, tokenConfirmation]);
 
     emails.emailRegistro({
       name: firstName,
@@ -79,7 +80,7 @@ const login = async (req, res) => {
   : res.status(200).send({msj: 'Login successfull', person: person, token: token})
 }
 
-const confirmation = async (req, res) => {
+const confirmUserAccount = async (req, res) => {
   const token = req.body.token;
   console.log(token)
   try {
@@ -93,6 +94,6 @@ const confirmation = async (req, res) => {
 
 module.exports = {
   signup,
-  confirmation,
+  confirmUserAccount,
   login
 }
