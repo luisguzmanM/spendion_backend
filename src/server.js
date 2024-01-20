@@ -22,4 +22,4 @@ app.use('/home', homeRoutes);
 app.use('/payment', paymentsRoutes)
 app.use('/setting', settingRoutes)
 
-app.listen(port, () => console.log(`Comencemos a generar dinero en el puerto ---> ${port} :D`));
+app.listen(port, () => console.log(`✅ Server running in the port ---> ${port} 🚀`));

@@ -2,7 +2,6 @@ const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 // Email para confirmar la cuenta
-
 const emailRegistro = async (data) => {
   const transport = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
