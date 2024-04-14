@@ -1,10 +1,6 @@
-// Dependencies
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
-const path = require('path');
-
-// Routes
 const authRoutes = require('./routes/authRoutes');
 const homeRoutes = require('./routes/homeRoutes');
 const paymentsRoutes = require('./routes/paymentsRoutes');
@@ -22,4 +18,4 @@ app.use('/home', homeRoutes);
 app.use('/payment', paymentsRoutes)
 app.use('/setting', settingRoutes)
 
-app.listen(port, () => console.log(`✅ Server running in the port ---> ${port} 🚀`));
+app.listen(port, () => console.log(`🚀 Server running in the port ---> ${port} 🚀`));

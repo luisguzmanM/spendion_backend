@@ -4,10 +4,8 @@ const models = require('./../models/homeModel');
 const jwt = require('jsonwebtoken');
 
 const getBudgets = async (req, res) => {
-  const id_person = parseInt(req.query.id_person);
-  let result;
   try {
-    result = await db.query(models.getBudgets, [id_person]);
+    let result = await db.query(models.getBudgets, [parseInt(req.query.id_person)]);
     let budgets = result.rows[0].get_all_budgets_by_id_person === null ? [] : result.rows[0].get_all_budgets_by_id_person;
     budgets = getValuesByBudget(budgets);
     res.status(200).send(budgets);

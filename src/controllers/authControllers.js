@@ -7,7 +7,6 @@ const emails = require('./../utils/emails');
 const tokenConfirm = require('./../utils/token');
 
 const signup = async (req, res) => {
-
   const { firstName, lastName, email, password } = req.body;
   const encryptedPassword = encryptor.encrypt(password);
   const tokenConfirmation = tokenConfirm.generarID()
@@ -82,10 +81,8 @@ const login = async (req, res) => {
 
 const confirmUserAccount = async (req, res) => {
   const token = req.body.token;
-  console.log(token)
   try {
-    const confirmation = await db.query(model.realConfirmation, [token]);
-    console.log('confirmation :', confirmation);
+    await db.query(model.realConfirmation, [token]);
     res.status(200).send({msj: 'Account confirmed successfully'});
   } catch (error) {
     res.status(500).send('Error trying to confirm account');
