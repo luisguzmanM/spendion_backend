@@ -7,16 +7,23 @@ const model = require('./../models/paymentsModel');
 let id_person = null;
 
 const url_api = process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_API_LIVE : process.env.PAYPAL_API_SANDBOX;
-console.log(url_api);
 
 const auth = {
   user: process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_CLIENT_ID_LIVE : process.env.PAYPAL_CLIENT_ID_SANDBOX,
   pass: process.env.NODE_ENV === 'prod' ? process.env.PAYPAL_SECRET_KEY_LIVE : process.env.PAYPAL_SECRET_KEY_SANDBOX
 }
 
-// Pasos para ejecutar una subscripción a un producto
+const getStartDateSuscription = () => {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + 7);
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+  const dayCleaned = day < 10 ? `0${day}` : `${day}`;
+  const monthCleaned = month < 10 ? `0${month}` : `${month}`;
+  return `${year}-${monthCleaned}-${dayCleaned}T00:00:00Z`;
+}
 
-// Paso 1
 const createProduct = (req, res) => {
   console.log('creating product...');
   const product = {
@@ -28,7 +35,7 @@ const createProduct = (req, res) => {
     home_url: 'https://www.google.com'
   }
   request.post(`${url_api}/v1/catalogs/products`, {
-    auth,
+    auth: auth,
     body: product,
     json: true
   }, (err, response) => {
@@ -36,14 +43,12 @@ const createProduct = (req, res) => {
   })
 }
 
-// Paso 2
 const createPlan = (req, res) => {  
   console.log('creating plan...')
-  const { body } = req; // product_id
 
   const plan = {
-    name: 'PREMIUM PLAN',
-    product_id: body.product_id,
+    name: 'SPENDION SUSCRIPTION',
+    product_id: req.body.product_id,
     status: 'ACTIVE',
     billing_cycles: [
       {
@@ -56,8 +61,8 @@ const createPlan = (req, res) => {
         total_cycles: 12,
         pricing_scheme: {
           fixed_price: { 
-            value: '9.99', // Pago recurrente (Como en el gym) esto es lo que se va a cobrar cada mes.
-            currency_code: 'USD' // Puedes configurar la moneda
+            value: '4.99', // This is the MRR by User
+            currency_code: 'USD'
           }
         }
       }
@@ -65,19 +70,20 @@ const createPlan = (req, res) => {
     payment_preferences: {
       auto_bill_outstanding: true,
       setup_fee: { 
-        value: '0.00', // Inscripción (Como en el gym)
+        value: '0.00',
         currency_code: 'USD'
       },
       setup_fee_failure_action: 'CONTINUE',
-      payment_failure_threshold: 3 // Si el pago falla lo intenta tres veces mas.
+      payment_failure_threshold: 5
     },
     taxes: {
       percentage: '0.00', 
       inclusive: false
     }
   }
+
   request.post(`${url_api}/v1/billing/plans`, {
-    auth,
+    auth: auth,
     body: plan,
     json: true
   }, (err, response) => {
@@ -85,81 +91,39 @@ const createPlan = (req, res) => {
   })
 }
 
-// Paso 3
-const createSubscription = (req, res) => {
+const createSubscription = async (req, res) => {
   console.log('creating subscription...');
-  const { body } = req;
-  id_person = req.body.id_person;
-  const subscription = {
-    plan_id: body.plan_id,
-    start_time: "2024-01-01T00:00:00Z", // Fecha en la que inicia la subscripción. (Aquí puedo poner que inicie 7 días despues par darle 7 dias gratis)
-    quantity: 1,
-    subscriber: {
-      name: {
-        given_name: "John",
-        surname: "Rockefeller"
+
+  try {
+    const response = await db.query(model.getUserById, [req.body.id_person]);
+    const { fname, lname, email } = response.rows[0];
+
+    const subscription = {
+      plan_id: req.body.plan_id,
+      start_time: getStartDateSuscription(), // This day start the suscription
+      quantity: 1,
+      subscriber: {
+        name: {
+          given_name: fname,
+          surname: lname
+        },
+        email_address: email,
       },
-      email_address: "customer@example.com",
-    },
-    return_url: 'http://localhost:4000/payment/gracias',
-    cancel_url: 'http://localhost:4000/payment/cancelPayment'
-  }
-  request.post(`${url_api}/v1/billing/subscriptions`, {
-    auth,
-    body: subscription,
-    json: true
-  }, (err, response) => {
-    console.log('Subscription link created successfully.');
-    res.json({ data: response.body });
-  })
-}
-
-// Pasos para ejecutar un pago único de producto
-
-// Paso 1
-const createPayment = (req, res) => {
-  /**
- * Esta función solicita al usuario autorización para que paypal pueda descontar dinero de su cuenta.
- */
-  const body = {
-    intent: 'CAPTURE',
-    purchase_units: [{
-      amount: {
-        currency_code: 'USD',
-        value: '9.99'
-      }
-    }],
-    application_context: {
-      brand_name: 'spendion',
-      landing_page: 'NO_PREFERENCE',
-      user_action: 'PAY_NOW',
-      return_url: 'http://localhost:4000/payment/executePayment', // URL a la que será redirigido el usuario si confirma. Retornará una url como esta: http://localhost:4000/execute-payment?token=5D5544678T1278516&PayerID=VWMSWKDEGP9LJ en donde está el token de la autorización. Cuando el usuario confirma lo que hace es darle permiso a paypal para tomar su dinero.
-      cancel_url: 'http://localhost:4000/payment/cancelPayment' // URL a la que será redirigido el usuario si cancela
+      return_url: 'http://localhost:4000/payment/gracias',
+      cancel_url: 'http://localhost:4000/payment/cancelPayment'
     }
+  
+    request.post(`${url_api}/v1/billing/subscriptions`, {
+      auth: auth,
+      body: subscription,
+      json: true
+    }, (err, response) => {
+      console.log('response.body ->>>', response.body)
+      res.json({ data: response.body });
+    })
+  } catch (error) {
+    throw error;
   }
-  request.post(`${url_api}/v2/checkout/orders`, {
-    auth,
-    body,
-    json: true
-  }, (err, response) => {
-    res.json({ data: response.body })
-  })
-}
-
-// Paso 2
-const executePayment = (req, res) => {
-/**
- * Esta función captura el monto de la cuenta del usuario. Hace efectivo el pago.
- */
-  const token = req.query.token;
-  // El siguiente request devuelve la data con el estado del cobro
-  request.post(`${url_api}/v2/checkout/orders/${token}/capture`, {
-    auth,
-    body: {},
-    json: true
-  }, (err, response) => {
-    res.json({ data: response.body })
-  })
 }
 
 const webHookCreateProduct = async (req, res) => {
@@ -175,8 +139,6 @@ module.exports = {
   createProduct,
   createPlan,
   createSubscription,
-  createPayment,
-  executePayment,
   webHookCreateProduct
 }
 
@@ -192,18 +154,11 @@ module.exports = {
  *   5. SandBox es para pruebas y live es para producción.
  *   6. Declarar objeto que contenga client ID y Secret ID.
  * 
- * B. FUNCIONES BACKEND NECESARIAS PARA SUBSCRIPCIONES CON PAYPAL
+ * FUNCIONES BACKEND NECESARIAS PARA SUBSCRIPCIONES CON PAYPAL
  *   1. Crear producto.
  *      - Esto nos retorna un id de producto.
  *   2. Crear plan.
  *      - Le pasamos un id de producto y no retorna un id de plan.
  *   3. Crear subscripción.
  *      - Le pasamos un id de plan y nos retorna una url para pasarle al cliente.
- * 
- * C. FUNCIONES BACKEND NECESARIAS PARA PAGOS ÚNICOS CON PAYPAL
- *   1. Crear pago.
- *      - Retorn un objeto. La que nos interesa es la que dice "approve". Copiar esa url y abrir en incógnito.
- *      - Ir a sandbox accounts y obtener un usuario de prueba.
- *      - Iniciar sesión con usuario simulado de paypal (No iniciar sesión con tu cuenta real).
- *   2. Ejecutar pago.
  */
