@@ -32,7 +32,7 @@ const signup = async (req, res) => {
       token: tokenConfirmation
     })
 
-    res.status(200).send({msj: 'Signup successfull'});
+    res.status(200).send({msj: 'Signup successful'});
   } catch (error) {
     console.log(error);
     res.status(500).send('There is a signup problem. Try again.');
@@ -76,7 +76,7 @@ const login = async (req, res) => {
 
   decryptedPassword !== password 
   ? res.status(400).send({msj: 'Wrong password'})
-  : res.status(200).send({msj: 'Login successfull', person: person, token: token})
+  : res.status(200).send({msj: 'Login successful', person: person, token: token})
 }
 
 const confirmUserAccount = async (req, res) => {
